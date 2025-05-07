@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prova de Logica</title>
+  </head>
+  <body>
+    <script>
+
+      function validarNome(nome) {
+        return /^[A-Za-z\s]+$/.test(nome);
+      }
+
+      function validarQuantidade(qtd) {
+        return /^[0-9]+$/.test(qtd);
+      }
+
+      let estoque = [];
+
+      function adicionarEquipamento() {
+        const nome = prompt("Nome do equipamento");
+        const quantidade = parseInt(prompt("quantidade:"), 10);
+        let equipamentoExistente = estoque.find(
+          (eq) => eq.nome.toLowerCase() === nome.toLowerCase()
+        );
+        if (!validarNome(nome)) {
+          alert("O Nome do equipamento deve conter apenas letras.");
+          return;
+        }
+        if (!validarQuantidade(quantidade)) {
+          alert("A quantidade deve ser um número.");
+          return;
+        }
+
+        if (equipamentoExistente) {
+          equipamentoExistente.quantidade =
+            equipamentoExistente.quantidade + quantidade;
+        } else {
+          estoque.push({ nome, quantidade });
+        }
+        alert("Equipamento adicionado ao estoque");
+      }
+
+      function venderEquipamento() {
+        const nome = prompt("Nome do equipamento");
+        const quantidade = parseInt(prompt("quantidade:"), 10);
+        let equipamento = estoque.find(
+          (eq) => eq.nome.toLowerCase() === nome.toLowerCase()
+        );
+        if (!validarNome(nome)) {
+          alert("O nome do equipamento deve conter apenas letras.");
+          return;
+        }
+        if (!validarQuantidade(quantidade)) {
+          alert("A quantidade deve ser um número.");
+          return;
+        }
+
+        if (equipamento) {
+          if (equipamento.quantidade >= quantidade) {
+            equipamento.quantidade -= quantidade;
+            alert("Equipamento Vendido");
+          } else {
+            alert("Quantidade insuficiente no estoque");
+          }
+        } else {
+          alert("Equipamento não encontrado");
+        }
+      }
+
+      function exibirEstoque() {
+        if (estoque.length === 0) {
+          alert("Estoque vazio");
+          return;
+        }
+        let mensagem = "Estoque:\n";
+        for (let eq of estoque) {
+          mensagem += `${eq.nome}: ${eq.quantidade}\n`;
+        }
+        alert(mensagem);
+      }
+
+      function menu() {
+        let opcao;
+        do {
+          opcao = prompt(
+            " Menu:\n\n" +
+              "1 - Adicionar Equipamento\n" +
+              "2 - Vender Equipamento\n" +
+              "3 - Exibir Estoque\n" +
+              "4 - Sair\n\n" +
+              "opção:"
+          );
+
+          switch (opcao) {
+            case "1":
+              adicionarEquipamento();
+              break;
+            case "2":
+              venderEquipamento();
+              break;
+            case "3":
+              exibirEstoque();
+              break;
+            case "4":
+              alert("Programa Encerrado");
+              break;
+            default:
+              alert("Opção Invalida");
+          }
+        } while (opcao !== "4");
+      }
+
+      menu();
+    </script>
+  </body>
+</html>
